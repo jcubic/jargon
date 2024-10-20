@@ -9,6 +9,19 @@ and [leash shell](https://github.com/jcubic/leash). Both use the same code to cr
 
 Check Makefile to see what commands was used to generate sqlite database.
 
+## CSV
+
+To create CSV file you can use SQLite CLI:
+
+```bash
+$ sqlite3 jargon3.db
+sqlite> .headers on
+sqlite> .mode csv
+sqlite> .output jargon.csv
+sqlite> SELECT * FROM term;
+sqlite> .quit
+```
+
 ## License
 
 [CC0 Public Domain](https://creativecommons.org/share-your-work/public-domain/cc0/)
