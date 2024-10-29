@@ -18,7 +18,9 @@ $ sqlite3 jargon3.db
 sqlite> .headers on
 sqlite> .mode csv
 sqlite> .output jargon.csv
-sqlite> SELECT * FROM term;
+sqlite> SELECT * FROM terms;
+sqlite> .output abbrev.csv
+sqlite> SELECT * FROM abbrev;
 sqlite> .quit
 ```
 
