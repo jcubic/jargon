@@ -1,10 +1,9 @@
 <?php
 
-
 class JargonXML {
-    function __construct() {
+    function __construct($file) {
         $doc = new DOMDocument();
-        $doc->load('jargon_lajkonik.xml');
+        $doc->load($file);
         $this->entries = $doc->getElementsByTagName('entry');
     }
     function find($name) {
@@ -32,21 +31,20 @@ class JargonXML {
     }
 }
 
-$jargon = new JargonXML();
+$jargon = new JargonXML($argv[1]);
 
-
-$db = new SQLiteDatabase('jargon_lajkonik.db');
-$db->query('CREATE TABLE terms(id integer auto_increment, term varchar(255), def text, primary key(id))');
-$db->query('CREATE TABLE abbrev(id integer auto_increment, term integer, name varchar(100), primary key(id), foreign key(term) references terms(id))');
+$db = new SQLite3($argv[2]);
+$db->exec('CREATE TABLE terms(id integer auto_increment, term varchar(255), def text, primary key(id))');
+$db->exec('CREATE TABLE abbrev(id integer auto_increment, term integer, name varchar(100), primary key(id), foreign key(term) references terms(id))');
 foreach($jargon->find('.') as $term) {
-    $query = "INSERT INTO terms(term, def) VALUES('" . sqlite_escape_string($term['term']) . "', '" . sqlite_escape_string($term['def']) . "')";
-    if ($db->query($query)) {
+    $query = "INSERT INTO terms(term, def) VALUES('" . SQLite3::escapeString($term['term']) . "', '" . SQLite3::escapeString($term['def']) . "')";
+    if ($db->exec($query)) {
         $id = $db->lastInsertRowid();
         echo $id;
         if (array_key_exists('abbrev', $term)) {
             foreach ($term['abbrev'] as $abbrev) {
-                $query = "INSERT INTO abbrev(term, name) VALUES($id, '" . sqlite_escape_string($abbrev) . "')";
-                $db->query($query);
+                $query = "INSERT INTO abbrev(term, name) VALUES($id, '" . SQLite3::escapeString($abbrev) . "')";
+                $db->exec($query);
             }
             echo " ; " . count($term['abbrev']) . " abrevs";
         }

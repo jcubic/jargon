@@ -21,7 +21,7 @@
     <xsl:template match="ulink">
         <xsl:value-of select="."/>
     </xsl:template>
-	<xsl:template match="glossary">
+    <xsl:template match="glossary">
         <xsl:for-each select="*/glossentry">
             <entry>
                 <term><xsl:value-of select="glossterm"/></term>

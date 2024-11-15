@@ -1,0 +1,38 @@
+#!/usr/bin/expect
+
+# Check if the correct number of arguments is provided
+if {$argc != 2} {
+    puts "Usage: $argv0 <input_database> <output_directory>"
+    exit 1
+}
+
+# Get arguments
+set db_file [lindex $argv 0]
+set output_dir [lindex $argv 1]
+
+# Ensure output directory ends with a slash
+if {[string index $output_dir end] != "/"} {
+    set output_dir "${output_dir}/"
+}
+
+# Start SQLite3
+spawn sqlite3 $db_file
+
+# Export SELECT * FROM abbrev; to abbrev.csv
+expect "sqlite> "
+send ".headers on\r"
+send ".mode csv\r"
+send ".output ${output_dir}abbrev.csv\r"
+send "SELECT * FROM abbrev;\r"
+
+# Export SELECT * FROM term; to jargon.csv
+expect "sqlite> "
+send ".output ${output_dir}jargon.csv\r"
+send "SELECT * FROM terms;\r"
+
+# Quit SQLite3
+expect "sqlite> "
+send ".quit\r"
+
+# Ensure the script ends
+expect eof
