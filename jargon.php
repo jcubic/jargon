@@ -9,7 +9,7 @@ class JargonXML {
     function find($name) {
         $result = array();
         foreach($this->entries as $entry) {
-            $term = self::get_text($entry->getElementsByTagName('term')->item(0)); //->item(0)->childNodes->item(0)->wholeText;
+            $term = self::get_text($entry->getElementsByTagName('term')->item(0));
             if (preg_match("/" . $name . "/i", $term)) {
                 $found = array(
                     'term' => $term,
@@ -27,7 +27,11 @@ class JargonXML {
         return $result;
     }
     private static function get_text($node) {
-        return trim($node->childNodes->item(0)->wholeText);
+        $first_child = $node->childNodes->item(0);
+        if ($first_child->nodeType === 1) {
+            return trim($first_child->textContent);
+        }
+        return $first_child->wholeText;
     }
 }
 

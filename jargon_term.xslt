@@ -10,13 +10,13 @@
         </xsl:if>
     </xsl:template>
     <xsl:template match="glossterm">
-        <xsl:text>[[bu;#fff;;jargon]</xsl:text><xsl:value-of select="."/><xsl:text>]</xsl:text>
+        <name><xsl:value-of select="."/></name>
     </xsl:template>
     <xsl:template match="quote">
-        <xsl:text>[[i;;]</xsl:text><xsl:value-of select="."/><xsl:text>]</xsl:text>
+        <italic><xsl:value-of select="."/></italic>
     </xsl:template>
     <xsl:template match="emphasis">
-        <xsl:text>[[b;#fff;]</xsl:text><xsl:value-of select="."/><xsl:text>]</xsl:text>
+        <emphasis><xsl:value-of select="."/></emphasis>
     </xsl:template>
     <xsl:template match="ulink">
         <xsl:value-of select="."/>
