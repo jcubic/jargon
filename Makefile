@@ -13,11 +13,12 @@ raw/jargon.xml: raw/jargon.xslt jargon.xml
 abbrev.csv jargon.csv: jargon.db
 	./export.exp jargon.db .
 
+raw/abbrev.csv raw/jargon.csv: raw/jargon.db
+	./export.exp raw/jargon.db raw
+
 csv: abbrev.csv jargon.csv raw/abbrev.csv raw/jargon.csv
 
 raw/jargon.db: raw/jargon.xml
 	$(test -e raw/jargon.db && rm raw/jargon.db*)
 	php -f jargon.php raw/jargon.xml raw/jargon.db
 
-raw/abbrev.csv raw/jargon.csv: raw/jargon.db
-	./export.exp raw/jargon.db raw
